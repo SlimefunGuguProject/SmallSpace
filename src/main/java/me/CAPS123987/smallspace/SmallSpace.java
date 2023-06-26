@@ -25,33 +25,46 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.generator.ChunkGenerator;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.Vector;
+import org.bukkit.plugin.Plugin;
 
 import java.util.List;
 import java.util.logging.Level;
 
 
-public class SmallSpace extends JavaPlugin implements SlimefunAddon {
+public class SmallSpace extends JavaPlugin implements SlimefunAddon, Listener {
     public static SmallSpace instance;
     Config cfg = new Config(this);
 
     public static SmallSpace getInstance() {
         return instance;
     }
-
     @Override
     public void onEnable() {
-        if (!getServer().getPluginManager().isPluginEnabled("GuizhanLibPlugin")) {
+
+		if (!getServer().getPluginManager().isPluginEnabled("GuizhanLibPlugin")) {
 			getLogger().log(Level.SEVERE, "本插件需要 鬼斩前置库插件(GuizhanLibPlugin) 才能运行!");
 			getLogger().log(Level.SEVERE, "从此处下载: https://50l.cc/gzlib");
 			getServer().getPluginManager().disablePlugin(this);
 			return;
 		}
+    	
+    	this.getServer().getPluginManager().registerEvents((Listener)this, (Plugin)this);
 
-        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("Build ")) {
-            GuizhanUpdater.start(this,getFile(), "SlimefunGuguProject", "SmallSpace", "master");
-        }
+    	cfg.setHeader("#WARNING! Set radius smaller than border size(12 blocks+)");
+    	cfg.save();
+
+		if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("Build ")) {
+			GuizhanUpdater.start(this,getFile(), "SlimefunGuguProject", "SmallSpace", "master");
+		}
 
         instance = this;
 
@@ -105,6 +118,30 @@ public class SmallSpace extends JavaPlugin implements SlimefunAddon {
          * If you are using your main class for this, simply return "this".
          */
         return this;
+    }
+    public static SmallSpace getInstance() {
+        return instance;
+    }
+
+    @EventHandler
+    public void playerTeleportEvent(PlayerTeleportEvent e) {
+    	TeleportCause tp = e.getCause();
+    	String world = e.getFrom().getWorld().getName();
+    	if(tp==TeleportCause.CHORUS_FRUIT&&world.equals("SmallSpace")) {
+    		e.setCancelled(true);
+    	}
+    	if(tp==TeleportCause.ENDER_PEARL&&world.equals("SmallSpace")) {
+    		e.setCancelled(true);
+    	}
+    }
+    @EventHandler
+    public void blockBreak(BlockBreakEvent e) {
+    	Material m = e.getBlock().getType();
+    	String name = e.getBlock().getWorld().getName();
+    	if(m==Material.BEDROCK&&name.equals("SmallSpace")&&!e.getPlayer().hasPermission("SmallSpace.admin")) {
+    		e.setCancelled(true);
+    	}
+
     }
 
     /*

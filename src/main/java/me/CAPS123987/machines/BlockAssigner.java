@@ -107,7 +107,6 @@ public class BlockAssigner extends SimpleSlimefunItem<BlockTicker> implements ET
 
     private void constructMenu(BlockMenuPreset preset) {
 
-
         for (int i : border) {
             preset.addItem(i, new CustomItemStack(new ItemStack(Material.GRAY_STAINED_GLASS_PANE), " "),
                 ChestMenuUtils.getEmptyClickHandler());

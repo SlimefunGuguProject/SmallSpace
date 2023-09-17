@@ -119,9 +119,6 @@ public class SmallSpace extends JavaPlugin implements SlimefunAddon, Listener {
          */
         return this;
     }
-    public static SmallSpace getInstance() {
-        return instance;
-    }
 
     @EventHandler
     public void playerTeleportEvent(PlayerTeleportEvent e) {

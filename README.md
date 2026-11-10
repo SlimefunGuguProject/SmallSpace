@@ -2,11 +2,9 @@
 
 该附属允许你在方块内部拥有更多的空间。
 
-<p align="center">
-  <a href="https://builds.guizhanss.net/SlimefunGuguProject/SmallSpace/master/">
-    <img src="https://builds.guizhanss.net/f/SlimefunGuguProject/SmallSpace/master/badge.svg" alt="SmallSpace"/>
-  </a>
-</p>
+## 下载
+
+[下载 SmallSpace](https://resources.guizhanss.com/plugin/SmallSpace)
 
 ## 展示
 <p align="center"><img alt="image" src="https://user-images.githubusercontent.com/87692752/236276843-38ade5d9-36f1-47de-ab4d-96b2ea5eaf05.png"></p>
